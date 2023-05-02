@@ -37,7 +37,7 @@ public class PatientManager
             throw new Exception("Invalid CI");
         }
 
-        Patient? patientToUpdate = _patients.Find(patient => patient.CI == ci);
+        Patient? patientToUpdate = ReadPatientFromFile(ci);
         
         if (patientToUpdate == null)
         {
@@ -46,6 +46,10 @@ public class PatientManager
 
         patientToUpdate.Name = name;
         patientToUpdate.LastName = lastName;
+
+        DeletePatientFromFile(ci);
+        WritePatientToFile(patientToUpdate);
+
         return patientToUpdate;
     }
 
@@ -132,5 +136,33 @@ public class PatientManager
         string line = $"{patient.CI},{patient.Name},{patient.LastName},{patient.BloodType}";
         writer.WriteLine(line);
         writer.Close();
+    }
+
+    public void DeletePatientFromFile(int ci)
+    {
+        string tempPath = "temp.txt";
+
+        StreamReader reader = new StreamReader(_filePath);
+        StreamWriter writer = new StreamWriter(tempPath);
+
+        string? line = reader.ReadLine();
+        while (line != null)
+        {
+            string[] patientInfo = line.Split(',');
+            int patientCi = int.Parse(patientInfo[0]);
+
+            if (patientCi != ci)
+            {
+                writer.WriteLine(line);
+            }
+
+            line = reader.ReadLine();
+        }
+
+        reader.Close();
+        writer.Close();
+
+        File.Delete(_filePath);
+        File.Move(tempPath, _filePath);
     }
 }
