@@ -51,6 +51,11 @@ public class PatientManager
 
     public Patient Create(string name, string lastName, int ci)
     {
+        if (ReadPatientFromFile(ci) != null)
+        {
+            throw new Exception("Patient with the same CI already exists");
+        }
+
         Random random = new Random();
         string[] bloodTypes = {"A", "B", "AB", "O"};
         int index = random.Next(bloodTypes.Length);
@@ -62,7 +67,9 @@ public class PatientManager
             LastName = lastName,
             BloodType = bloodTypes[index]
         };
-        _patients.Add(createdPatient);
+        
+        WritePatientToFile(createdPatient);
+
         return createdPatient;
     }
 
@@ -79,5 +86,51 @@ public class PatientManager
         _patients.RemoveAt(patientToDeleteIndex);
 
         return patientToDelete;
+    }
+
+    public Patient? ReadPatientFromFile(int ci)
+    {
+        if (!File.Exists(_filePath))
+        {
+            return null;
+        }
+
+        StreamReader reader = new StreamReader(_filePath);
+
+        string? line = reader.ReadLine();
+        while (line != null)
+        {
+            string[] patientInfo = line.Split(',');
+            int patientCi = int.Parse(patientInfo[0]);
+            string patientName = patientInfo[1];
+            string patientLastName = patientInfo[2];
+            string patientBloodType = patientInfo[3];
+
+            if (patientCi == ci)
+            {
+                reader.Close();
+                Patient patient = new Patient()
+                {
+                    CI = patientCi,
+                    Name = patientName,
+                    LastName = patientLastName,
+                    BloodType = patientBloodType
+                };
+                return patient;
+            }
+
+            line = reader.ReadLine();
+        }
+
+        reader.Close();
+        return null;
+    }
+
+    public void WritePatientToFile(Patient patient)
+    {
+        StreamWriter writer = new StreamWriter(_filePath, true);
+        string line = $"{patient.CI},{patient.Name},{patient.LastName},{patient.BloodType}";
+        writer.WriteLine(line);
+        writer.Close();
     }
 }
