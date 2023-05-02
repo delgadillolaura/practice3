@@ -50,6 +50,6 @@ public class PatientController : ControllerBase
     [Route("{ci}")]
     public Patient Delete([FromRoute] int ci)
     {
-        return _patientManager.Delete();
+        return _patientManager.Delete(ci);
     }
 }
