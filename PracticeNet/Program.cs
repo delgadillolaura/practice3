@@ -11,7 +11,6 @@ Log.Logger = new LoggerConfiguration()
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
-builder.Services.AddSingleton<PatientManager>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -27,6 +26,8 @@ var configurationBuilder = new ConfigurationBuilder()
 
 IConfiguration Configuration = configurationBuilder.Build();
 string siteTitle = Configuration.GetSection("Title").Value;
+string locationPath = Configuration.GetSection("Location").Value;
+builder.Services.AddTransient(_ => new PatientManager(locationPath));
 
 builder.Services.AddSwaggerGen(options =>
 {
