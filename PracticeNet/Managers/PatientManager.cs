@@ -21,9 +21,23 @@ public class PatientManager
         return new Patient();
     }
 
-    public Patient Update()
+    public Patient Update(int ci, string name, string lastName)
     {
-        return new Patient();
+        if (ci < 0)
+        {
+            throw new Exception("Invalid CI");
+        }
+
+        Patient? patientToUpdate = _patients.Find(patient => patient.CI == ci);
+        
+        if (patientToUpdate == null)
+        {
+            throw new Exception("Patient not found");
+        }
+
+        patientToUpdate.Name = name;
+        patientToUpdate.LastName = lastName;
+        return patientToUpdate;
     }
 
     public Patient Create(string name, string lastName, int ci)

@@ -30,9 +30,14 @@ public class PatientController : ControllerBase
 
     [HttpPut]
     [Route("{ci}")]
-    public Patient Put([FromRoute] int ci)
+    public Patient Put([FromRoute] int ci, [FromBody]Patient patientToUpdate)
     {
-        return _patientManager.Update();
+        Patient updatedPatient = new Patient()
+        {
+            Name = patientToUpdate.Name,
+            LastName = patientToUpdate.LastName,
+        };
+        return _patientManager.Update(ci, patientToUpdate.Name ?? "Unknown", patientToUpdate.LastName ?? "Unknown");
     }
 
     [HttpPost]
