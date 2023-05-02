@@ -26,9 +26,21 @@ public class PatientManager
         return new Patient();
     }
 
-    public Patient Create()
+    public Patient Create(string name, string lastName, int ci)
     {
-        return new Patient();
+        Random random = new Random();
+        string[] bloodTypes = {"A", "B", "AB", "O"};
+        int index = random.Next(bloodTypes.Length);
+
+        Patient createdPatient = new Patient()
+        {
+            CI = ci,
+            Name = name,
+            LastName = lastName,
+            BloodType = bloodTypes[index]
+        };
+        _patients.Add(createdPatient);
+        return createdPatient;
     }
 
     public Patient Delete()

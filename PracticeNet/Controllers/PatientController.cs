@@ -36,9 +36,9 @@ public class PatientController : ControllerBase
     }
 
     [HttpPost]
-    public Patient Post()
+    public Patient Post([FromBody]Patient patientToCreate)
     {
-        return _patientManager.Create();
+        return _patientManager.Create(patientToCreate.Name ?? "Unknown", patientToCreate.LastName ?? "Unknown", patientToCreate.CI);
     }
 
     [HttpDelete]
