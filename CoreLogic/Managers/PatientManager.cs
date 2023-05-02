@@ -4,23 +4,21 @@ namespace UPB.CoreLogic.Managers;
 
 public class PatientManager 
 {
-    private List<Patient> _patients;
     private string _filePath;
 
     public PatientManager(string filePath)
     {
-        _patients = new List<Patient>();
         _filePath = filePath;
     }
 
     public List<Patient> GetAll()
     {
-        return _patients;
+        return ReadPatientsFromFile();
     }
 
     public Patient GetByCi(int ci)
     {
-        Patient? patientToGet = _patients.Find(patient => patient.CI == ci);
+        Patient? patientToGet = ReadPatientFromFile(ci);
        
         if (patientToGet == null)
         {
@@ -127,6 +125,37 @@ public class PatientManager
 
         reader.Close();
         return null;
+    }
+
+    public List<Patient> ReadPatientsFromFile ()
+    {
+        List<Patient> patients = new List<Patient>();
+
+        if (!File.Exists(_filePath))
+        {
+            return patients;
+        }
+
+        StreamReader reader = new StreamReader(_filePath);
+        string? line = reader.ReadLine();
+
+        while (line != null)
+        {
+            string[] patientInfo = line.Split(',');
+            Patient patient = new Patient()
+            {
+                CI = int.Parse(patientInfo[0]),
+                Name = patientInfo[1],
+                LastName = patientInfo[2],
+                BloodType = patientInfo[3]
+            };
+            
+            patients.Add(patient);
+            line = reader.ReadLine();
+        }
+        reader.Close();
+
+        return patients;
     }
 
     public void WritePatientToFile(Patient patient)
