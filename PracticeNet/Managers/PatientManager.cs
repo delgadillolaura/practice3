@@ -11,14 +11,21 @@ public class PatientManager
         _patients = new List<Patient>();
     }
 
-     public List<Patient> GetAll()
+    public List<Patient> GetAll()
     {
-        return new List<Patient>();
+        return _patients;
     }
 
-    public Patient GetByCi()
+    public Patient GetByCi(int ci)
     {
-        return new Patient();
+        Patient? patientToGet = _patients.Find(patient => patient.CI == ci);
+       
+        if (patientToGet == null)
+        {
+            throw new Exception("Patient not found");
+        }
+
+        return patientToGet;
     }
 
     public Patient Update(int ci, string name, string lastName)

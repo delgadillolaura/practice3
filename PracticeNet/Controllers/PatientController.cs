@@ -25,7 +25,7 @@ public class PatientController : ControllerBase
     [Route("{ci}")]
     public Patient GetByCi([FromRoute] int ci)
     {
-        return _patientManager.GetByCi();
+        return _patientManager.GetByCi(ci);
     }
 
     [HttpPut]
