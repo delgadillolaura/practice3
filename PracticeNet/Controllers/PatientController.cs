@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using UPB.PracticeNet.Models;
-using UPB.PracticeNet.Managers;
+using UPB.CoreLogic.Models;
+using UPB.CoreLogic.Managers;
 
 namespace UPB.PracticeNet.Controllers;
 

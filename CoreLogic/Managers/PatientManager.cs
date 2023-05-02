@@ -1,6 +1,6 @@
-using UPB.PracticeNet.Models;
+using UPB.CoreLogic.Models;
 
-namespace UPB.PracticeNet.Managers;
+namespace UPB.CoreLogic.Managers;
 
 public class PatientManager 
 {
