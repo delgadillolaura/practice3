@@ -4,6 +4,7 @@ using Serilog;
 // Create the logger and setup your sinks, filters and properties
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
+    .WriteTo.RollingFile("logs\\log-{Date}.log")
     .CreateBootstrapLogger();
 
 var builder = WebApplication.CreateBuilder(args);
