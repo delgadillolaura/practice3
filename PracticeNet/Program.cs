@@ -1,4 +1,10 @@
 using Microsoft.OpenApi.Models;
+using Serilog;
+
+// Create the logger and setup your sinks, filters and properties
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateBootstrapLogger();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+// After create the builder - UseSerilog
+builder.Host.UseSerilog();
 
 var configurationBuilder = new ConfigurationBuilder()
         .SetBasePath(builder.Environment.ContentRootPath)
