@@ -1,4 +1,5 @@
 using Microsoft.OpenApi.Models;
+using UPB.PracticeNet.Managers;
 using Serilog;
 
 // Create the logger and setup your sinks, filters and properties
@@ -10,6 +11,7 @@ Log.Logger = new LoggerConfiguration()
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
+builder.Services.AddSingleton<PatientManager>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

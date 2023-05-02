@@ -8,11 +8,11 @@ namespace UPB.PracticeNet.Controllers;
 [Route("[controller]")]
 public class PatientController : ControllerBase
 {
-    private PatientManager _patientManager;
+    private readonly PatientManager _patientManager;
 
-    public PatientController()
+    public PatientController(PatientManager patientManager)
     {
-        _patientManager = new PatientManager();
+        _patientManager = patientManager;
     }
 
     [HttpGet]
