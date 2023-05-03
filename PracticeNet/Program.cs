@@ -2,13 +2,27 @@ using Microsoft.OpenApi.Models;
 using UPB.CoreLogic.Managers;
 using Serilog;
 
-// Create the logger and setup your sinks, filters and properties
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console()
-    .WriteTo.RollingFile("logs\\log-{Date}.log")
-    .CreateBootstrapLogger();
-
 var builder = WebApplication.CreateBuilder(args);
+
+if(builder.Environment.IsDevelopment())
+{
+    Log.Logger = new LoggerConfiguration()
+        .WriteTo.Console()
+        .WriteTo.RollingFile("logs\\log-{Date}.log")
+        .CreateBootstrapLogger();
+}
+else if (builder.Environment.EnvironmentName == "QA")
+{
+    Log.Logger = new LoggerConfiguration()
+        .WriteTo.RollingFile("logs\\log-{Date}.log")
+        .CreateBootstrapLogger();
+}
+else
+{
+    Log.Logger = new LoggerConfiguration()
+        .WriteTo.Console()
+        .CreateBootstrapLogger();
+}
 
 // Add services to the container
 builder.Services.AddControllers();
