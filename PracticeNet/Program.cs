@@ -1,5 +1,6 @@
 using Microsoft.OpenApi.Models;
 using UPB.CoreLogic.Managers;
+using UPB.PracticeNet.Middlewares;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -58,6 +59,8 @@ var app = builder.Build();
 Log.Information("Application running in {Environment} environment", builder.Environment.EnvironmentName);
 
 // Configure the HTTP request pipeline
+app.UseGlobalExceptionHandler();
+
 if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName == "QA" || app.Environment.EnvironmentName == "UAT")
 {
     app.UseSwagger();
