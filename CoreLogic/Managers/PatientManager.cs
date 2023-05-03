@@ -18,6 +18,11 @@ public class PatientManager
 
     public Patient GetByCi(int ci)
     {
+        if (ci < 0)
+        {
+            throw new Exception("Invalid CI");
+        }
+
         Patient? patientToGet = ReadPatientFromFile(ci);
        
         if (patientToGet == null)
@@ -30,9 +35,9 @@ public class PatientManager
 
     public Patient Update(int ci, string name, string lastName)
     {
-        if (ci < 0)
+        if (ci < 0 || string.IsNullOrEmpty(name) || string.IsNullOrEmpty(lastName))
         {
-            throw new Exception("Invalid CI");
+            throw new Exception("Invalid input parameters");
         }
 
         Patient? patientToUpdate = ReadPatientFromFile(ci);
@@ -53,6 +58,11 @@ public class PatientManager
 
     public Patient Create(string name, string lastName, int ci)
     {
+        if (ci < 0 || string.IsNullOrEmpty(name) || string.IsNullOrEmpty(lastName))
+        {
+            throw new Exception("Invalid input parameters");
+        }
+
         if (ReadPatientFromFile(ci) != null)
         {
             throw new Exception("Patient with the same CI already exists");
@@ -77,6 +87,11 @@ public class PatientManager
 
     public Patient Delete(int ci)
     {
+        if (ci < 0)
+        {
+            throw new Exception("Invalid CI");
+        }
+
         Patient? patientToDelete = ReadPatientFromFile(ci);
 
         if (patientToDelete == null)
