@@ -8,20 +8,20 @@ var builder = WebApplication.CreateBuilder(args);
 if(builder.Environment.IsDevelopment())
 {
     Log.Logger = new LoggerConfiguration()
-        .WriteTo.Console()
-        .WriteTo.RollingFile("logs\\log-{Date}.log")
+        .WriteTo.Console(outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message}{NewLine}")
+        .WriteTo.RollingFile("logs\\log-{Date}.log", outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message}{NewLine}")
         .CreateBootstrapLogger();
 }
 else if (builder.Environment.EnvironmentName == "QA")
 {
     Log.Logger = new LoggerConfiguration()
-        .WriteTo.RollingFile("logs\\log-{Date}.log")
+        .WriteTo.RollingFile("logs\\log-{Date}.log", outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message}{NewLine}")
         .CreateBootstrapLogger();
 }
 else
 {
     Log.Logger = new LoggerConfiguration()
-        .WriteTo.Console()
+        .WriteTo.Console(outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message}{NewLine}")
         .CreateBootstrapLogger();
 }
 
@@ -42,6 +42,14 @@ var configurationBuilder = new ConfigurationBuilder()
 IConfiguration Configuration = configurationBuilder.Build();
 string siteTitle = Configuration.GetSection("Title").Value;
 string locationPath = Configuration.GetSection("Location").Value;
+
+string? folderPath = Path.GetDirectoryName(locationPath);
+
+if (!string.IsNullOrEmpty(folderPath))
+{
+    Directory.CreateDirectory(folderPath);
+}
+
 builder.Services.AddTransient(_ => new PatientManager(locationPath));
 
 builder.Services.AddSwaggerGen(options =>
