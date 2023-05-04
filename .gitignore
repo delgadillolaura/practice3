@@ -56,3 +56,9 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,dotnetcore,windows
+
+# Log files
+*.log
+
+# Patient files
+*.txt
